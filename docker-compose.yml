@@ -1,7 +1,7 @@
 services:
   database:
     build:
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.db
       context: .
     restart: always
     ports:
