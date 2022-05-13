@@ -8,10 +8,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<Airbnb2022Context>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
-});
+builder.Services.AddDbContext<Airbnb2022Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
 builder.Services.AddScoped<IListingRepository, ListingRepository>();
 
