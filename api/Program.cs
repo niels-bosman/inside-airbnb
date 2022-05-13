@@ -13,7 +13,7 @@ builder.Services.AddDbContext<Airbnb2022Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("default"));
 });
 
-builder.Services.AddSingleton<ListingRepository>();
+builder.Services.AddScoped<IListingRepository, ListingRepository>();
 
 var app = builder.Build();
 

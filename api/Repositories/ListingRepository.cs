@@ -1,36 +1,20 @@
 using api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories;
 
-public class ListingRepository : IRepository<Listing>
+public class ListingRepository : IListingRepository
 {
-    public Task<IEnumerable<Listing>> GetAll()
+    private readonly Airbnb2022Context _context;
+    private readonly DbSet<Listing> _listings;
+    public ListingRepository(Airbnb2022Context context)
     {
-        throw new NotImplementedException();
+        _context = context;
+        _listings = context.Set<Listing>();
     }
 
-    public Task<Listing> Get(int id)
+    public async Task<IEnumerable<Listing>> GetAll()
     {
-        throw new NotImplementedException();
-    }
-
-    public Task<Listing> Update(int id, Listing listing)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Listing> Create(Listing listing)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task Delete(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> Exists(int id)
-    {
-        throw new NotImplementedException();
+        return await _listings.ToListAsync();
     }
 }
