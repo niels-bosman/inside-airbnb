@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,13 +18,10 @@ namespace api.Controllers
     {
         private readonly IListingRepository _repository;
 
-        public ListingController(IListingRepository repository)
-        {
-            _repository = repository;
-        }
+        public ListingController(IListingRepository repository) => _repository = repository;
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Listing>>> GetListing()
+        public async Task<ActionResult<IEnumerable<ListingDto>>> GetListing()
         {
             return Ok(await _repository.GetAll());
         }

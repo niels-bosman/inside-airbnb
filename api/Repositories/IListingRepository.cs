@@ -1,8 +1,8 @@
-using api.Models;
+using api.Dto;
 
 namespace api.Repositories;
 
 public interface IListingRepository
 {
-     Task<IEnumerable<Listing>> GetAll();
+     Task<IEnumerable<ListingDto>> GetAll();
 }
