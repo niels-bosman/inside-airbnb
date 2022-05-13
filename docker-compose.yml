@@ -10,6 +10,11 @@ services:
       - database:/var/opt/mssql
     env_file:
       - .env
+  next:
+    build:
+      dockerfile: Dockerfile.next
+      context: .
+    restart: always
 
 volumes:
   database: null
