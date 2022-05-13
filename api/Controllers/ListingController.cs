@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using api.Models;
+using api.Repositories;
 
 namespace api.Controllers
 {
@@ -15,9 +16,11 @@ namespace api.Controllers
     public class ListingController : ControllerBase
     {
         private readonly Airbnb2022Context _context;
+        private readonly IRepository<Listing> _repository;
 
-        public ListingController(Airbnb2022Context context)
+        public ListingController(Airbnb2022Context context, ListingRepository repository)
         {
+            _repository = repository;
             _context = context;
         }
 

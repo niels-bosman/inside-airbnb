@@ -2,7 +2,7 @@ using api.Models;
 
 namespace api.Repositories;
 
-public class ListingRepository : IListingRepository
+public class ListingRepository : IRepository<Listing>
 {
     public Task<IEnumerable<Listing>> GetAll()
     {
