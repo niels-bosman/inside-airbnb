@@ -11,6 +11,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<Airbnb2022Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
+builder.Services.Add
+
 builder.Services.AddScoped<IListingRepository, ListingRepository>();
 builder.Services.AddSingleton<ListingMapper>();
 
