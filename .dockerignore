@@ -1,2 +1,9 @@
-bin/
-obj/
+api/bin/
+api/obj/
+
+frontend/node_modules/
+frontend/npm-debug.log
+frontend/README.md
+frontend/.next
+
+.git

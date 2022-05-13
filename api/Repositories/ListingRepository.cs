@@ -9,6 +9,7 @@ public class ListingRepository : IListingRepository
 {
     private readonly DbSet<Listing> _listings;
     private readonly ListingMapper _listingMapper;
+    
     public ListingRepository(Airbnb2022Context context, ListingMapper listingMapper)
     {
         _listings = context.Set<Listing>();
