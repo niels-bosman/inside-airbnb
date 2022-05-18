@@ -1,7 +1,7 @@
 services:
   database:
     build:
-      dockerfile: Dockerfile.db
+      dockerfile: /database/Dockerfile
       context: .
     restart: always
     ports:
@@ -9,7 +9,7 @@ services:
     volumes:
       - database:/var/opt/mssql
     env_file:
-      - .env
+      - ./database/.env
 
   next:
     build:
