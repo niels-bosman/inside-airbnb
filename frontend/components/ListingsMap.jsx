@@ -22,7 +22,7 @@ const ListingsMap = ({ listings, token }) => {
   return (
     <Map
       mapboxAccessToken={token}
-      initialViewState={{ latitude: 52.37, longitude: 4.90, zoom: 10, pitch: 45 }}
+      initialViewState={{ latitude: 52.37, longitude: 4.90, zoom: 10 }}
       style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0}}
       mapStyle="mapbox://styles/mapbox/dark-v10"
     >
