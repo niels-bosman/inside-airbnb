@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import Slider from "rc-slider";
-import 'rc-slider/assets/index.css';
-import { Listing } from "../models/Listing";
-import styles from "../styles/Sidebar.module.css";
+import React, { useState } from "react"
+import Slider from "rc-slider"
+import 'rc-slider/assets/index.css'
+import { Listing } from "../models/Listing"
+import styles from "../styles/Sidebar.module.css"
 
 type Props = {
   listings: Listing[],
@@ -10,16 +10,16 @@ type Props = {
 }
 
 export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
-  const [filteredPrice, setFilteredPrice] = useState<number[]>([]);
+  const [filteredPrice, setFilteredPrice] = useState<number[]>([])
 
   const prices = {
-    min: listings.reduce((acc, curr) => acc.price > curr.price ? curr : acc).price,
-    max: listings.reduce((acc, curr) => acc.price < curr.price ? curr : acc).price,
+    min: 0,
+    max: 2000,
   }
 
   const filterPrice = (minimum: number, maximum: number) => {
     const filteredListings = listings.filter((listing) => listing.price >= minimum && listing.price <= maximum)
-    onFilter(filteredListings);
+    onFilter(filteredListings)
   }
 
   return (
@@ -30,12 +30,11 @@ export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
       </div>
       <div className={styles.sidebarItem}>
         <h4>
-          Prijs {filteredPrice.length !== 0 && `(${filteredPrice[0]} - ${filteredPrice[1]})`}
+          Prijs {filteredPrice.length !== 0 && `(€${filteredPrice[0]} - €${filteredPrice[1]})`}
         </h4>
         <Slider
+          {...prices}
           range
-          min={prices.min}
-          max={prices.max}
           defaultValue={[prices.min, prices.max]}
           marks={{[prices.min]: prices.min, [prices.max]: prices.max}}
           step={10}
@@ -43,7 +42,7 @@ export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
             filterPrice(prices[0], prices[1])
 
             if (typeof(prices) !== "number") {
-              setFilteredPrice(prices);
+              setFilteredPrice(prices)
             }
           }}
         />

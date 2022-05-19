@@ -4,12 +4,12 @@
 }
 
 .map {
-  width: 75%;
+  width: 70%;
   position: relative;
 }
 
 .sidebar {
   padding: 50px;
   background-color: #f0f0f0;
-  width: 25%;
+  width: 30%;
 }

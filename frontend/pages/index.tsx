@@ -1,11 +1,11 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import ListingsMap from '../components/ListingsMap';
-import axios from 'axios';
-import { Listing } from '../models/Listing';
-import React, { useState } from "react";
-import { GetServerSideProps } from "next";
-import { Sidebar } from "../components/Sidebar";
+import ListingsMap from '../components/ListingsMap'
+import axios from 'axios'
+import { Listing } from '../models/Listing'
+import React, { useEffect, useState } from "react"
+import { GetServerSideProps } from "next"
+import { Sidebar } from "../components/Sidebar"
 
 
 type Props = {
