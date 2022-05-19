@@ -64,8 +64,8 @@ export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
 
   return (
     <>
-      <div className={styles.heading}>
-        <h2>Filters</h2>
+      <div className={styles.top}>
+        <h2 className={styles.heading}>Filters</h2>
         <p>Je kunt alle Airbnb locaties filteren op prijs, buurt en review</p>
       </div>
       <div className={styles.sidebarItem}>
@@ -74,6 +74,7 @@ export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
         </h4>
         <Slider
           {...prices}
+          value={filteredPrice}
           range
           defaultValue={[prices.min, prices.max]}
           marks={{[prices.min]: prices.min, [prices.max]: prices.max}}
@@ -103,6 +104,7 @@ export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
         </h4>
         <Slider
           {...reviews}
+          value={filteredReview}
           range
           defaultValue={[reviews.min, reviews.max]}
           marks={{[reviews.min]: reviews.min, [reviews.max]: reviews.max}}

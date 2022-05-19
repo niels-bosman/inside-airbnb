@@ -1,5 +1,9 @@
-.heading {
+.top {
   margin-bottom: 40px;
+}
+
+.heading {
+  margin: 0;
 }
 
 .sidebarItem {
