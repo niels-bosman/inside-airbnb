@@ -1,8 +1,9 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Slider from "rc-slider"
 import 'rc-slider/assets/index.css'
 import { Listing } from "../models/Listing"
 import styles from "../styles/Sidebar.module.css"
+import Select from "react-select";
 
 type Props = {
   listings: Listing[],
@@ -10,16 +11,55 @@ type Props = {
 }
 
 export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
-  const [filteredPrice, setFilteredPrice] = useState<number[]>([])
+  const [filteredPrice, setFilteredPrice] = useState<number[] | undefined>()
+  const [filteredNeighbourhood, setFilteredNeighbourhood] = useState<string | undefined>()
+  const [filteredReview, setFilteredReview] = useState<number[] | undefined>()
+
+  useEffect(() => filter(), [filteredPrice, filteredNeighbourhood , filteredReview])
+
+  const neighbourhoods = listings
+    .map(item => item.neighbourhood)
+    .filter((value, index, self) => self.indexOf(value) === index)
+
+  const filter = () => {
+    onFilter(
+      listings
+        .filter(filterPrice)
+        .filter(filterNeighbourhood)
+        .filter(filterReview)
+    );
+  }
+
+  const filterPrice = (listing: Listing) => {
+    if (filteredPrice === undefined) return true
+
+    const [minimum, maximum] = filteredPrice;
+
+    return listing.price >= minimum && listing.price <= maximum
+  }
+
+  const filterNeighbourhood = (listing: Listing) => {
+    if (filteredNeighbourhood === undefined) return true
+
+    return listing.neighbourhood === filteredNeighbourhood
+  }
+
+  const filterReview = (listing: Listing) => {
+    if (filteredReview === undefined) return true
+
+    const [minimum, maximum] = filteredReview;
+
+    return listing.numberOfReviews >= minimum && listing.numberOfReviews <= maximum
+  };
 
   const prices = {
     min: 0,
     max: 2000,
   }
 
-  const filterPrice = (minimum: number, maximum: number) => {
-    const filteredListings = listings.filter((listing) => listing.price >= minimum && listing.price <= maximum)
-    onFilter(filteredListings)
+  const reviews = {
+    min: listings.reduce((acc, curr) => acc.numberOfReviews < curr.numberOfReviews ? acc : curr).numberOfReviews,
+    max: listings.reduce((acc, curr) => acc.numberOfReviews > curr.numberOfReviews ? acc : curr).numberOfReviews,
   }
 
   return (
@@ -30,7 +70,7 @@ export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
       </div>
       <div className={styles.sidebarItem}>
         <h4>
-          Prijs {filteredPrice.length !== 0 && `(€${filteredPrice[0]} - €${filteredPrice[1]})`}
+          Prijs per nacht {filteredPrice && `(€${filteredPrice[0]} - €${filteredPrice[1]})`}
         </h4>
         <Slider
           {...prices}
@@ -39,11 +79,36 @@ export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
           marks={{[prices.min]: prices.min, [prices.max]: prices.max}}
           step={10}
           onChange={(prices) => {
-            filterPrice(prices[0], prices[1])
-
-            if (typeof(prices) !== "number") {
-              setFilteredPrice(prices)
-            }
+            if (typeof(prices) !== "number") setFilteredPrice(prices)
+          }}
+        />
+      </div>
+      <div className={styles.sidebarItem}>
+        <h4>
+          Buurt
+        </h4>
+        <Select
+          isClearable
+          options={
+            neighbourhoods.map((neighbourhood) => ({ value: neighbourhood, label: neighbourhood}))
+          }
+          onChange={(event) => {
+            setFilteredNeighbourhood(event?.value)
+          }}
+        />
+      </div>
+      <div className={styles.sidebarItem}>
+        <h4>
+          Aantal reviews {filteredReview && `(${filteredReview[0]} - ${filteredReview[1]})`}
+        </h4>
+        <Slider
+          {...reviews}
+          range
+          defaultValue={[reviews.min, reviews.max]}
+          marks={{[reviews.min]: reviews.min, [reviews.max]: reviews.max}}
+          step={10}
+          onChange={(reviews) => {
+            if (typeof(reviews) !== "number") setFilteredReview(reviews)
           }}
         />
       </div>

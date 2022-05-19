@@ -4,4 +4,6 @@ export interface Listing {
   latitude: number,
   longitude: number,
   price: number,
+  neighbourhood: string,
+  numberOfReviews: number,
 }
