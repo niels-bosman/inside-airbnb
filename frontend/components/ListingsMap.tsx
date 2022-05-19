@@ -1,24 +1,16 @@
 import Map, { Layer, Source } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { clusterCountLayer, clusterLayer, unclusteredPointLayer } from '../data/layers';
+import React from "react";
+import { Listing } from "../models/Listing";
+import { toGeoJson } from "../mappers/listings-mapper";
 
-const ListingsMap = ({ listings, token }) => {
-  const formatCoordinate = (coordinate, dotOffset) => (
-    parseFloat(coordinate.toString().substring(0, dotOffset) + '.' + coordinate.toString().substring(dotOffset))
-  )
+type Props = {
+  listings: Listing[],
+  token: string,
+}
 
-  const data = {
-    type: 'FeatureCollection',
-    features: listings.map(({ longitude, latitude, id, name, hostname, neighbourhood, price, numberOfReviews }) => ({
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [formatCoordinate(longitude, 1), formatCoordinate(latitude, 2)]
-      },
-      properties: { id, name, hostname, neighbourhood, price, numberOfReviews, }
-    }))
-  };
-
+const ListingsMap: React.FC<Props> = ({ listings, token }) => {
   return (
     <Map
       mapboxAccessToken={token}
@@ -29,7 +21,10 @@ const ListingsMap = ({ listings, token }) => {
       <Source
         id="earthquakes"
         type="geojson"
-        data={data}
+        data={{
+          type: 'FeatureCollection',
+          features: listings.map((listing) => toGeoJson(listing))
+        }}
         cluster={true}
         clusterMaxZoom={14}
         clusterRadius={50}
