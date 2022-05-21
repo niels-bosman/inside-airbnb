@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api.Extensions;
 
-public static class ListingMapper
+public static class ListingSetExtension
 {
     public static IQueryable<ListingDto> AsDto(this DbSet<Listing> listings)
     {
