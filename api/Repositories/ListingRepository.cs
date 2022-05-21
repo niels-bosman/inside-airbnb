@@ -1,5 +1,5 @@
 using api.Dto;
-using api.Mappers;
+using api.Extensions;
 using api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,12 +8,10 @@ namespace api.Repositories;
 public class ListingRepository : IListingRepository
 {
     private readonly DbSet<Listing> _listings;
-    private readonly ListingMapper _listingMapper;
     
-    public ListingRepository(Airbnb2022Context context, ListingMapper listingMapper)
+    public ListingRepository(Airbnb2022Context context)
     {
         _listings = context.Set<Listing>();
-        _listingMapper = listingMapper;
     }
 
     public async Task<IEnumerable<ListingDto>> GetAll()
@@ -22,7 +20,7 @@ public class ListingRepository : IListingRepository
         // return await _listings.ToListAsync();
 
         return await _listings
-            .Select(listing => _listingMapper.ToDto(listing))
+            .AsDto()
             .AsNoTracking()
             .ToListAsync();
     }

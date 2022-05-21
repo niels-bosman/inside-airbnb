@@ -1,7 +1,7 @@
 services:
   database:
     build:
-      dockerfile: /database/Dockerfile
+      dockerfile: ./database/Dockerfile
       context: .
     restart: always
     ports:
@@ -13,9 +13,17 @@ services:
 
   next:
     build:
-      dockerfile: /frontend/Dockerfile
+      dockerfile: ./frontend/Dockerfile
       context: .
     restart: always
+
+  api:
+    build:
+      dockerfile: ./api/Dockerfile
+      context: .
+    restart: always
+    ports:
+      - 5001:80
 
   cache:
     image: redis:latest

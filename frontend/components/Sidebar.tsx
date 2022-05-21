@@ -35,7 +35,8 @@ export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
 
     const [minimum, maximum] = filteredPrice;
 
-    return listing.price >= minimum && listing.price <= maximum
+    const price =  parseFloat(listing.price.replace(/[,$]/g, ""));
+    return price >= minimum && price <= maximum
   }
 
   const filterNeighbourhood = (listing: Listing) => {
@@ -66,7 +67,6 @@ export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
     <>
       <div className={styles.top}>
         <h2 className={styles.heading}>Filters</h2>
-        <p>Je kunt alle Airbnb locaties filteren op prijs, buurt en review</p>
       </div>
       <div className={styles.sidebarItem}>
         <h4>

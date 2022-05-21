@@ -3,7 +3,7 @@ export interface Listing {
   name: string,
   latitude: number,
   longitude: number,
-  price: number,
+  price: string,
   neighbourhood: string,
   numberOfReviews: number,
 }
