@@ -3,7 +3,7 @@ import styles from '../styles/Home.module.css'
 import ListingsMap from '../components/ListingsMap'
 import axios from 'axios'
 import { Listing } from '../models/Listing'
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { GetServerSideProps } from "next"
 import { Sidebar } from "../components/Sidebar"
 
@@ -46,7 +46,7 @@ export default Home
 export const getServerSideProps: GetServerSideProps = async () => {
   const { MAPBOX_ACCESS_TOKEN, API_URL } = process.env
 
-  const allListings = (await axios.get(`${API_URL}/listing`)).data
+  const allListings: Listing[] = (await axios.get(`${API_URL}/listing`)).data
 
   return {
     props: {

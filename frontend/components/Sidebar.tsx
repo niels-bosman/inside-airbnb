@@ -4,6 +4,7 @@ import 'rc-slider/assets/index.css'
 import { Listing } from "../models/Listing"
 import styles from "../styles/Sidebar.module.css"
 import Select from "react-select";
+import { list } from "postcss";
 
 type Props = {
   listings: Listing[],
@@ -35,8 +36,7 @@ export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
 
     const [minimum, maximum] = filteredPrice;
 
-    const price =  parseFloat(listing.price.replace(/[,$]/g, ""));
-    return price >= minimum && price <= maximum
+    return listing.price >= minimum && listing.price <= maximum
   }
 
   const filterNeighbourhood = (listing: Listing) => {
