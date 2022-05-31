@@ -5,7 +5,8 @@ import axios from 'axios'
 import { Listing } from '../models/Listing'
 import React, { useState } from "react"
 import { GetServerSideProps } from "next"
-import { Sidebar } from "../components/Sidebar"
+import { Filters } from "../components/Filters";
+import { AdminPanel } from "../components/AdminPanel";
 
 
 type Props = {
@@ -31,10 +32,8 @@ const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, allListings }) => {
           />
         </section>
         <aside className={styles.sidebar}>
-          <Sidebar
-            listings={allListings}
-            onFilter={setListings}
-          />
+          <Filters listings={allListings} onFilter={setListings} />
+          <AdminPanel />
         </aside>
       </main>
     </div>

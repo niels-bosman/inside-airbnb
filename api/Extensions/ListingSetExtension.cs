@@ -12,7 +12,6 @@ public static class ListingSetExtension
             Id = listing.Id,
             Latitude = listing.Latitude,
             Longitude = listing.Longitude,
-            Name = listing.Name,
             Price = listing.Price,
             Neighbourhood = listing.NeighbourhoodCleansed,
             NumberOfReviews = listing.NumberOfReviews,

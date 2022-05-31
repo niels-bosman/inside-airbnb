@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react"
-import Slider from "rc-slider"
+import styles from "../styles/Sidebar.module.css";
+import Slider from "rc-slider";
 import 'rc-slider/assets/index.css'
-import { Listing } from "../models/Listing"
-import styles from "../styles/Sidebar.module.css"
 import Select from "react-select";
-import { list } from "postcss";
+import React, { useEffect, useState } from "react";
+import { Listing } from "../models/Listing";
 
 type Props = {
   listings: Listing[],
   onFilter: Function,
 }
 
-export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
+export const Filters: React.FC<Props> = ({ listings, onFilter }) => {
   const [filteredPrice, setFilteredPrice] = useState<number[] | undefined>()
   const [filteredNeighbourhood, setFilteredNeighbourhood] = useState<string | undefined>()
   const [filteredReview, setFilteredReview] = useState<number[] | undefined>()
@@ -69,51 +68,51 @@ export const Sidebar: React.FC<Props> = ({ listings, onFilter }) => {
         <h2 className={styles.heading}>Filters</h2>
       </div>
       <div className={styles.sidebarItem}>
-        <h4>
+        <h5 className={styles.subHeading}>
           Prijs per nacht {filteredPrice && `(€${filteredPrice[0]} - €${filteredPrice[1]})`}
-        </h4>
+        </h5>
         <Slider
           {...prices}
           value={filteredPrice}
           range
           defaultValue={[prices.min, prices.max]}
-          marks={{[prices.min]: prices.min, [prices.max]: prices.max}}
+          marks={{ [prices.min]: prices.min, [prices.max]: prices.max }}
           step={10}
           onChange={(prices) => {
-            if (typeof(prices) !== "number") setFilteredPrice(prices)
-          }}
-        />
+            if (typeof (prices) !== "number")
+              setFilteredPrice(prices);
+          }}/>
       </div>
       <div className={styles.sidebarItem}>
-        <h4>
+        <h5 className={styles.subHeading}>
           Buurt
-        </h4>
+        </h5>
         <Select
           isClearable
-          options={
-            neighbourhoods.map((neighbourhood) => ({ value: neighbourhood, label: neighbourhood}))
-          }
-          onChange={(event) => {
-            setFilteredNeighbourhood(event?.value)
-          }}
-        />
+          options={neighbourhoods.map((neighbourhood) => ({
+            value: neighbourhood,
+            label: neighbourhood
+          }))}
+          onChange={(event: any) => {
+            setFilteredNeighbourhood(event?.value);
+          }}/>
       </div>
       <div className={styles.sidebarItem}>
-        <h4>
+        <h5 className={styles.subHeading}>
           Aantal reviews {filteredReview && `(${filteredReview[0]} - ${filteredReview[1]})`}
-        </h4>
+        </h5>
         <Slider
           {...reviews}
           value={filteredReview}
           range
           defaultValue={[reviews.min, reviews.max]}
-          marks={{[reviews.min]: reviews.min, [reviews.max]: reviews.max}}
+          marks={{ [reviews.min]: reviews.min, [reviews.max]: reviews.max }}
           step={10}
           onChange={(reviews) => {
-            if (typeof(reviews) !== "number") setFilteredReview(reviews)
-          }}
-        />
+            if (typeof (reviews) !== "number")
+              setFilteredReview(reviews);
+          }}/>
       </div>
     </>
   )
-};
+}
