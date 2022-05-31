@@ -3,19 +3,23 @@ import styles from '../styles/Home.module.css'
 import ListingsMap from '../components/ListingsMap'
 import axios from 'axios'
 import { Listing } from '../models/Listing'
-import React, { useState } from "react"
-import { GetServerSideProps } from "next"
-import { Filters } from "../components/Filters";
-import { AdminPanel } from "../components/AdminPanel";
+import React, { useState } from 'react'
+import { GetServerSideProps } from 'next'
+import { Filters } from '../components/Filters'
+import { AdminPanel } from '../components/AdminPanel'
+import { ActiveListing } from '../components/ActiveListing'
+import { ExtendedListing } from '../models/ExtendedListing'
 
 
 type Props = {
   MAPBOX_ACCESS_TOKEN: string,
+  API_URL: string,
   allListings: Listing[],
 }
 
-const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, allListings }) => {
+const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, API_URL, allListings }) => {
   const [listings, setListings] = useState<Listing[]>(allListings)
+  const [currentListing, setCurrentListing] = useState<ExtendedListing | null>(null)
 
   return (
     <div>
@@ -29,11 +33,20 @@ const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, allListings }) => {
           <ListingsMap
             listings={listings}
             token={MAPBOX_ACCESS_TOKEN}
+            onListingSelect={setCurrentListing}
+            API_URL={API_URL}
           />
         </section>
         <aside className={styles.sidebar}>
-          <Filters listings={allListings} onFilter={setListings} />
-          <AdminPanel />
+          <Filters
+            listings={allListings}
+            onFilter={setListings}
+          />
+          {/*<AdminPanel/>*/}
+          <ActiveListing
+            onClose={() => setCurrentListing(null)}
+            listing={currentListing}
+          />
         </aside>
       </main>
     </div>
@@ -50,6 +63,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   return {
     props: {
       MAPBOX_ACCESS_TOKEN,
+      API_URL,
       allListings,
     }
   }

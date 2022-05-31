@@ -1,5 +1,6 @@
 #nullable disable
 using api.Dto;
+using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using api.Repositories;
 using Microsoft.Extensions.Caching.Distributed;
@@ -22,7 +23,7 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ListingDto>>> GetListing()
+        public async Task<ActionResult<IEnumerable<ListingDto>>> GetAll()
         {
             const string cacheKey = "all-listings";
             var cachedListings = await _cache.GetStringAsync(cacheKey);
@@ -41,6 +42,34 @@ namespace api.Controllers
             );
             
             return Ok(listings);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Listing>> Get(int id)
+        {
+            var cacheKey = $"listing_{id}";
+            var cachedListing = await _cache.GetStringAsync(cacheKey);
+
+            if (cachedListing != null)
+            {
+                return Ok(JsonConvert.DeserializeObject<Listing>(cachedListing));
+            }
+            
+            var listing = await _repository.Get(id);
+
+            if (listing == null)
+            {
+                return BadRequest();
+            }
+        
+            await _cache.SetStringAsync(
+                cacheKey, 
+                JsonConvert.SerializeObject(listing, Formatting.Indented,
+                new JsonSerializerSettings {ReferenceLoopHandling = ReferenceLoopHandling.Ignore}), 
+                new DistributedCacheEntryOptions().SetSlidingExpiration(_cacheTimeout)
+            );
+
+            return Ok(listing);
         }
     }
 }

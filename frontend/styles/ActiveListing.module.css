@@ -1,0 +1,35 @@
+.wrapper {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 300px;
+  padding: 50px;
+  background-color: white;
+  border-radius: 50px 50px 0 0;
+  transition: 400ms ease;
+  z-index: 999;
+  box-shadow: 0 0 15px -1px rgba(0,0,0,0.1);
+}
+
+.hidden {
+  top: 100%;
+}
+
+.close {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  width: 45px;
+  border-radius: 50%;
+  background-color: #e8e8e8;
+  cursor: pointer;
+}
+
+.heading {
+  margin-top: 0;
+}
+

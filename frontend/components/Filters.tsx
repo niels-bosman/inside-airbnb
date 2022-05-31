@@ -1,9 +1,9 @@
-import styles from "../styles/Sidebar.module.css";
-import Slider from "rc-slider";
+import styles from '../styles/Sidebar.module.css'
+import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
-import Select from "react-select";
-import React, { useEffect, useState } from "react";
-import { Listing } from "../models/Listing";
+import Select from 'react-select'
+import React, { useEffect, useState } from 'react'
+import { Listing } from '../models/Listing'
 
 type Props = {
   listings: Listing[],
@@ -15,7 +15,7 @@ export const Filters: React.FC<Props> = ({ listings, onFilter }) => {
   const [filteredNeighbourhood, setFilteredNeighbourhood] = useState<string | undefined>()
   const [filteredReview, setFilteredReview] = useState<number[] | undefined>()
 
-  useEffect(() => filter(), [filteredPrice, filteredNeighbourhood , filteredReview])
+  useEffect(() => filter(), [filteredPrice, filteredNeighbourhood, filteredReview])
 
   const neighbourhoods = listings
     .map(item => item.neighbourhood)
@@ -27,13 +27,13 @@ export const Filters: React.FC<Props> = ({ listings, onFilter }) => {
         .filter(filterPrice)
         .filter(filterNeighbourhood)
         .filter(filterReview)
-    );
+    )
   }
 
   const filterPrice = (listing: Listing) => {
     if (filteredPrice === undefined) return true
 
-    const [minimum, maximum] = filteredPrice;
+    const [minimum, maximum] = filteredPrice
 
     return listing.price >= minimum && listing.price <= maximum
   }
@@ -47,10 +47,10 @@ export const Filters: React.FC<Props> = ({ listings, onFilter }) => {
   const filterReview = (listing: Listing) => {
     if (filteredReview === undefined) return true
 
-    const [minimum, maximum] = filteredReview;
+    const [minimum, maximum] = filteredReview
 
     return listing.numberOfReviews >= minimum && listing.numberOfReviews <= maximum
-  };
+  }
 
   const prices = {
     min: 0,
@@ -79,8 +79,8 @@ export const Filters: React.FC<Props> = ({ listings, onFilter }) => {
           marks={{ [prices.min]: prices.min, [prices.max]: prices.max }}
           step={10}
           onChange={(prices) => {
-            if (typeof (prices) !== "number")
-              setFilteredPrice(prices);
+            if (typeof (prices) !== 'number')
+              setFilteredPrice(prices)
           }}/>
       </div>
       <div className={styles.sidebarItem}>
@@ -94,7 +94,7 @@ export const Filters: React.FC<Props> = ({ listings, onFilter }) => {
             label: neighbourhood
           }))}
           onChange={(event: any) => {
-            setFilteredNeighbourhood(event?.value);
+            setFilteredNeighbourhood(event?.value)
           }}/>
       </div>
       <div className={styles.sidebarItem}>
@@ -109,8 +109,8 @@ export const Filters: React.FC<Props> = ({ listings, onFilter }) => {
           marks={{ [reviews.min]: reviews.min, [reviews.max]: reviews.max }}
           step={10}
           onChange={(reviews) => {
-            if (typeof (reviews) !== "number")
-              setFilteredReview(reviews);
+            if (typeof (reviews) !== 'number')
+              setFilteredReview(reviews)
           }}/>
       </div>
     </>

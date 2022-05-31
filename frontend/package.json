@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^1.10.1",
+    "@heroicons/react": "^1.0.6",
     "axios": "^0.27.2",
     "mapbox-gl": "^2.8.2",
     "next": "latest",

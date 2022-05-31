@@ -16,12 +16,16 @@ public class ListingRepository : IListingRepository
 
     public async Task<IEnumerable<ListingDto>> GetAll()
     {
-        // TODO: Run benchmark with slow variant.
-        // return await _listings.ToListAsync();
-
         return await _listings
             .AsDto()
             .AsNoTracking()
             .ToListAsync();
+    }
+    
+    public async Task<Listing?> Get(int id)
+    {
+        return await _listings
+            .AsNoTracking()
+            .FirstOrDefaultAsync(listing => listing.Id == id);
     }
 }

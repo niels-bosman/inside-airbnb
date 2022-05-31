@@ -1,38 +1,42 @@
-import Map, { Layer, MapLayerMouseEvent, Popup, Source } from 'react-map-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import { clusterCountLayer, clusterLayer, unclusteredPointLayer } from '../data/layers';
-import React from "react";
-import { Listing } from "../models/Listing";
-import { toGeoJson } from "../mappers/listings-mapper";
-import { MapTouchEvent } from "mapbox-gl";
+import Map, { Layer, MapLayerMouseEvent, Source } from 'react-map-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import { clusterCountLayer, clusterLayer, unclusteredPointLayer } from '../data/layers'
+import React from 'react'
+import { Listing } from '../models/Listing'
+import { toGeoJson } from '../mappers/listings-mapper'
+import { ExtendedListing } from '../models/ExtendedListing'
+import axios from 'axios'
 
 type Props = {
   listings: Listing[],
   token: string,
+  onListingSelect: Function,
+  API_URL: string,
 }
 
-const ListingsMap: React.FC<Props> = ({ listings, token }) => {
-  const handleMapClick = (e: MapLayerMouseEvent) => {
-    if (!e?.features) return;
+const ListingsMap: React.FC<Props> = ({ listings, token, onListingSelect, API_URL }) => {
+  const fetchListing = async (id: number): Promise<ExtendedListing> => (
+    (await axios.get(`${API_URL}/listing/${id}`)).data
+  )
 
-    const id = e.features[0].properties.id;
-    // TODO:
-    // Fetch the specific listing.
-    // Set the popup data to listing.
-  };
+  const handleMapClick = async (e: MapLayerMouseEvent) => {
+    if (!e?.features) return
+
+    const id = e.features[0].properties.id
+    const listing = await fetchListing(id)
+
+    onListingSelect(listing)
+  }
 
   return (
     <Map
       interactiveLayerIds={[unclusteredPointLayer.id!]}
       mapboxAccessToken={token}
       initialViewState={{ latitude: 52.36, longitude: 4.90, zoom: 11 }}
-      style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0 }}
+      style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }}
       mapStyle="mapbox://styles/mapbox/dark-v10"
       onClick={handleMapClick}
     >
-      <Popup longitude={4.90} latitude={52.36}>
-        <p>Hi</p>
-      </Popup>
       <Source
         id="earthquakes"
         type="geojson"

@@ -1,7 +1,7 @@
 import '../styles/globals.css'
-import React from "react";
-import { AppProps } from "next/app";
-import { Auth0Provider } from "@auth0/auth0-react";
+import React from 'react'
+import { AppProps } from 'next/app'
+import { Auth0Provider } from '@auth0/auth0-react'
 
 const MyApp: React.FC = ({ Component, pageProps }: AppProps) => (
   <Auth0Provider
