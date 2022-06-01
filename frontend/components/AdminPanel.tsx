@@ -6,10 +6,7 @@ export const AdminPanel = () => {
   // TODO: Fix whole admin thing.
 
   const {
-    user,
     isAuthenticated,
-    isLoading,
-    getAccessTokenSilently,
     loginWithRedirect
   } = useAuth0()
 

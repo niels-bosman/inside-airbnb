@@ -42,7 +42,7 @@ const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, API_URL, allListings }) =>
             listings={allListings}
             onFilter={setListings}
           />
-          {/*<AdminPanel/>*/}
+          <AdminPanel />
           <ActiveListing
             onClose={() => setCurrentListing(null)}
             listing={currentListing}

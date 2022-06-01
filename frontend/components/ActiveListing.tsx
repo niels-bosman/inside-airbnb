@@ -17,6 +17,7 @@ export const ActiveListing: React.FC<Props> = ({ listing, onClose }) => {
           <div className={styles.close} onClick={() => onClose()}>
             <XIcon width={25} height={25} />
           </div>
+          <img loading="lazy" src={listing.pictureUrl} alt={listing.name} />
         </div>
       )}
     </div>

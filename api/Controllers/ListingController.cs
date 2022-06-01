@@ -3,6 +3,7 @@ using api.Dto;
 using api.Models;
 using Microsoft.AspNetCore.Mvc;
 using api.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
 
@@ -28,11 +29,9 @@ namespace api.Controllers
             const string cacheKey = "all-listings";
             var cachedListings = await _cache.GetStringAsync(cacheKey);
 
-            if (cachedListings != null)
-            {
+            if (cachedListings != null) 
                 return Ok(JsonConvert.DeserializeObject<List<ListingDto>>(cachedListings));
-            }
-            
+
             var listings = await _repository.GetAll();
 
             await _cache.SetStringAsync(
@@ -44,28 +43,24 @@ namespace api.Controllers
             return Ok(listings);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<Listing>> Get(int id)
         {
             var cacheKey = $"listing_{id}";
             var cachedListing = await _cache.GetStringAsync(cacheKey);
 
             if (cachedListing != null)
-            {
                 return Ok(JsonConvert.DeserializeObject<Listing>(cachedListing));
-            }
-            
+
             var listing = await _repository.Get(id);
 
-            if (listing == null)
-            {
+            if (listing == null) 
                 return BadRequest();
-            }
-        
+
             await _cache.SetStringAsync(
-                cacheKey, 
+                cacheKey,
                 JsonConvert.SerializeObject(listing, Formatting.Indented,
-                new JsonSerializerSettings {ReferenceLoopHandling = ReferenceLoopHandling.Ignore}), 
+                new JsonSerializerSettings {ReferenceLoopHandling = ReferenceLoopHandling.Ignore}),
                 new DistributedCacheEntryOptions().SetSlidingExpiration(_cacheTimeout)
             );
 

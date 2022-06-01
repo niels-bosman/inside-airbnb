@@ -8,8 +8,7 @@ const MyApp: React.FC = ({ Component, pageProps }: AppProps) => (
     domain="https://dev-j162wi-u.us.auth0.com"
     clientId="UN3f7jZzRdocIj969ZGqAgCct7JtpBgJ"
     redirectUri="http://localhost:3000/"
-    scope="read:statistics"
-    audience="https://localhost:7114/"
+    audience="http://localhost:7220"
   >
     <Component {...pageProps} />
   </Auth0Provider>
