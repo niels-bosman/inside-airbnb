@@ -1,13 +1,17 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import styles from '../styles/Sidebar.module.css'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Statistics } from './Statistics'
+import { Listing } from '../models/Listing'
 
-export const AdminPanel = () => {
-  // TODO: Fix whole admin thing.
+type Props = {
+  listings: Listing[],
+}
 
+export const AdminPanel: React.FC<Props> = ({ listings }) => {
   const {
     isAuthenticated,
-    loginWithRedirect
+    loginWithRedirect,
   } = useAuth0()
 
   return (
@@ -15,7 +19,7 @@ export const AdminPanel = () => {
       <h2 className={styles.heading}>Admin</h2>
       {
         isAuthenticated
-          ? <p>Welkom</p>
+          ? <Statistics listings={listings} />
           : <button onClick={() => loginWithRedirect()}>Inloggen</button>
       }
     </>
