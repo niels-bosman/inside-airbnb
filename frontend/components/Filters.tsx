@@ -24,9 +24,7 @@ export const Filters: React.FC<Props> = ({ listings, onFilter }) => {
   const filter = () => {
     onFilter(
       listings
-        .filter(filterPrice)
-        .filter(filterNeighbourhood)
-        .filter(filterReview)
+        .filter((listing) => filterPrice(listing) && filterNeighbourhood(listing) && filterReview(listing))
     )
   }
 
@@ -34,8 +32,9 @@ export const Filters: React.FC<Props> = ({ listings, onFilter }) => {
     if (filteredPrice === undefined) return true
 
     const [minimum, maximum] = filteredPrice
+    const price = parseFloat(listing.price.replace('$', ''))
 
-    return listing.price >= minimum && listing.price <= maximum
+    return price >= minimum && price <= maximum
   }
 
   const filterNeighbourhood = (listing: Listing) => {
