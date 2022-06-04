@@ -6,4 +6,5 @@ export interface Listing {
   price: string,
   neighbourhood: string,
   numberOfReviews: number,
+  reviewScoresRating: number,
 }

@@ -15,6 +15,7 @@ public static class ListingSetExtension
             Price = listing.Price,
             Neighbourhood = listing.NeighbourhoodCleansed,
             NumberOfReviews = listing.NumberOfReviews,
+            ReviewScoresRating = listing.ReviewScoresRating,
         });
     }
 }

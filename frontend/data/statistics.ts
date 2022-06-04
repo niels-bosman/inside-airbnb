@@ -1,9 +1,7 @@
 import { Listing } from '../models/Listing'
 
 export const getListingsPerNeighbourhood = (listings: Listing[]) => {
-  const uniqueNeighbourhoods = listings
-    .map(item => item.neighbourhood)
-    .filter((value, index, self) => self.indexOf(value) === index)
+  const uniqueNeighbourhoods = getUniqueNeighbourhoods(listings)
 
   const amount = uniqueNeighbourhoods.map((neighbourhood) => {
     return listings.filter((listing) => listing.neighbourhood == neighbourhood).length
@@ -34,4 +32,72 @@ export const getListingsPerNeighbourhood = (listings: Listing[]) => {
       }
     ]
   }
+}
+
+export const getAveragePricePerNeighbourhood = (listings: Listing[]) => {
+  let neighbourhoods = {}
+
+  listings.forEach((listing) => {
+    if (neighbourhoods[listing.neighbourhood] == undefined) {
+      neighbourhoods[listing.neighbourhood] = {
+        total: 0,
+        count: 0,
+      }
+    }
+
+    neighbourhoods[listing.neighbourhood].total += parseInt(listing.price.replace('$', ''))
+    neighbourhoods[listing.neighbourhood].count++
+  })
+
+  Object.keys(neighbourhoods).forEach((neighbourhood) => {
+    neighbourhoods[neighbourhood].average = neighbourhoods[neighbourhood].total / neighbourhoods[neighbourhood].count
+  })
+
+  return {
+    labels: Object.keys(neighbourhoods),
+    datasets: [
+      {
+        label: 'Average value',
+        data: Object.keys(neighbourhoods).map((neighbourhood) => neighbourhoods[neighbourhood].average),
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      }
+    ]
+  }
+}
+
+export const getAverageRatingPerNeighbourhood = (listings: Listing[]) => {
+  let neighbourhoods = {}
+
+  listings.forEach((listing) => {
+    if (neighbourhoods[listing.neighbourhood] == undefined) {
+      neighbourhoods[listing.neighbourhood] = {
+        total: 0,
+        count: 0,
+      }
+    }
+
+    neighbourhoods[listing.neighbourhood].total += listing.reviewScoresRating / 10
+    neighbourhoods[listing.neighbourhood].count++
+  })
+
+  Object.keys(neighbourhoods).forEach((neighbourhood) => {
+    neighbourhoods[neighbourhood].average = neighbourhoods[neighbourhood].total / neighbourhoods[neighbourhood].count
+  })
+
+  return {
+    labels: Object.keys(neighbourhoods),
+    datasets: [
+      {
+        label: 'Average rating',
+        data: Object.keys(neighbourhoods).map((neighbourhood) => neighbourhoods[neighbourhood].average),
+        backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      }
+    ]
+  }
+}
+
+export const getUniqueNeighbourhoods = (listings: Listing[]): string[] => {
+  return listings
+    .map(item => item.neighbourhood)
+    .filter((value, index, self) => self.indexOf(value) === index)
 }

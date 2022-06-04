@@ -8,4 +8,6 @@ public class ListingDto
     public string? Price { get; set; }
     public string? Neighbourhood { get; set; }
     public int NumberOfReviews { get; set; }
+    
+    public int? ReviewScoresRating { get; set; }
 }

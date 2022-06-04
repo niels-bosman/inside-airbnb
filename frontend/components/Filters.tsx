@@ -4,6 +4,7 @@ import 'rc-slider/assets/index.css'
 import Select from 'react-select'
 import React, { useEffect, useState } from 'react'
 import { Listing } from '../models/Listing'
+import { getUniqueNeighbourhoods } from '../data/statistics'
 
 type Props = {
   listings: Listing[],
@@ -17,18 +18,16 @@ export const Filters: React.FC<Props> = ({ listings, onFilter }) => {
 
   useEffect(() => filter(), [filteredPrice, filteredNeighbourhood, filteredReview])
 
-  const neighbourhoods = listings
-    .map(item => item.neighbourhood)
-    .filter((value, index, self) => self.indexOf(value) === index)
+  const neighbourhoods = getUniqueNeighbourhoods(listings)
 
-  const filter = () => {
+  const filter = (): void => {
     onFilter(
       listings
         .filter((listing) => filterPrice(listing) && filterNeighbourhood(listing) && filterReview(listing))
     )
   }
 
-  const filterPrice = (listing: Listing) => {
+  const filterPrice = (listing: Listing): boolean => {
     if (filteredPrice === undefined) return true
 
     const [minimum, maximum] = filteredPrice
@@ -37,13 +36,13 @@ export const Filters: React.FC<Props> = ({ listings, onFilter }) => {
     return price >= minimum && price <= maximum
   }
 
-  const filterNeighbourhood = (listing: Listing) => {
+  const filterNeighbourhood = (listing: Listing): boolean => {
     if (filteredNeighbourhood === undefined) return true
 
     return listing.neighbourhood === filteredNeighbourhood
   }
 
-  const filterReview = (listing: Listing) => {
+  const filterReview = (listing: Listing): boolean => {
     if (filteredReview === undefined) return true
 
     const [minimum, maximum] = filteredReview
