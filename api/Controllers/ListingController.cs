@@ -69,9 +69,9 @@ namespace api.Controllers
 
         [HttpGet("statistics")]
         [Authorize(Policy = "ReadStatisticsAccess")]
-        public OkObjectResult GetStatistics()
+        public ActionResult GetStatistics()
         {
-            return Ok(true);
+            return Ok();
         }
     }
 }

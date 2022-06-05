@@ -18,3 +18,20 @@
   font-weight: 500;
   margin-top: 0;
 }
+
+.loginButton {
+  margin: 10px 0 10px;
+  width: 100%;
+  background-color: #006deb;
+  border-radius: 4px;
+  color: white;
+  padding: 10px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: all .4s ease;
+}
+
+.loginButton:hover {
+  background-color: #005ac4;
+}
