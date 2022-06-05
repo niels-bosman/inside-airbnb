@@ -66,5 +66,12 @@ namespace api.Controllers
 
             return Ok(listing);
         }
+
+        [HttpGet("statistics")]
+        [Authorize(Policy = "ReadStatisticsAccess")]
+        public OkObjectResult GetStatistics()
+        {
+            return Ok(true);
+        }
     }
 }

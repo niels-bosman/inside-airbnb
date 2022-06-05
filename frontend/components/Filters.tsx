@@ -52,7 +52,7 @@ export const Filters: React.FC<Props> = ({ listings, onFilter }) => {
 
   const prices = {
     min: 0,
-    max: 2000,
+    max: 1000,
   }
 
   const reviews = {

@@ -28,13 +28,11 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<Airbnb2022Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
-var domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
-
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = domain;
+        options.Authority = $"https://{builder.Configuration["Auth0:Domain"]}/";;
         options.Audience = builder.Configuration["Auth0:Audience"];
         // If the access token does not have a `sub` claim, `User.Identity.Name` will be `null`. Map it to a different claim by setting the NameClaimType below.
         options.TokenValidationParameters = new TokenValidationParameters
@@ -42,6 +40,12 @@ builder.Services
             NameClaimType = ClaimTypes.NameIdentifier
         };
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ReadStatisticsAccess", policy => 
+        policy.RequireClaim("permissions", "read:statistics"));
+});
 
 builder.Services.AddScoped<IListingRepository, ListingRepository>();
 

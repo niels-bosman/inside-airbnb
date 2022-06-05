@@ -9,6 +9,7 @@ const MyApp: React.FC = ({ Component, pageProps }: AppProps) => (
     clientId="UN3f7jZzRdocIj969ZGqAgCct7JtpBgJ"
     redirectUri="http://localhost:3000/"
     audience="http://localhost:7220"
+    cacheLocation="localstorage"
   >
     <Component {...pageProps} />
   </Auth0Provider>
