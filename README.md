@@ -36,7 +36,7 @@ dotnet watch
 #### Installing all necessary dependencies
 
 ```bash
-cd frontend
+cd client
 
 npm install
 
