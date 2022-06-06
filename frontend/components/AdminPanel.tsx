@@ -3,39 +3,23 @@ import styles from '../styles/Sidebar.module.css'
 import React from 'react'
 import { Statistics } from './Statistics'
 import { Listing } from '../models/Listing'
-import axios from 'axios'
 
 type Props = {
-  listings: Listing[],
   API_URL: string,
 }
 
-export const AdminPanel: React.FC<Props> = ({ listings, API_URL }) => {
+export const AdminPanel: React.FC<Props> = ({ API_URL }) => {
   const {
     isAuthenticated,
     loginWithRedirect,
-    getAccessTokenSilently,
-
     logout
   } = useAuth0()
-
-  const canViewStatistics = async () => {
-    const token = await getAccessTokenSilently()
-
-    const { status } = await axios.get(`${API_URL}/listing/statistics`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    })
-
-    return status === 200
-  }
 
   return (
     <>
       <h2 className={styles.heading}>Admin</h2>
       {
-        isAuthenticated && canViewStatistics()
+        isAuthenticated
           ? (
             <>
               <button
@@ -44,7 +28,7 @@ export const AdminPanel: React.FC<Props> = ({ listings, API_URL }) => {
               >
                 Uitloggen
               </button>
-              <Statistics listings={listings}/>
+              <Statistics API_URL={API_URL}/>
             </>
           )
           : <button

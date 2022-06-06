@@ -15,7 +15,7 @@ namespace api.Controllers
     {
         private readonly IListingRepository _repository;
         private readonly IDistributedCache _cache;
-        private readonly TimeSpan _cacheTimeout = TimeSpan.FromDays(1);
+        private readonly TimeSpan _cacheTimeout = TimeSpan.FromMinutes(15);
 
         public ListingController(IListingRepository repository, IDistributedCache cache)
         {
@@ -29,8 +29,10 @@ namespace api.Controllers
             const string cacheKey = "all-listings";
             var cachedListings = await _cache.GetStringAsync(cacheKey);
 
-            if (cachedListings != null) 
+            if (cachedListings != null)
+            {
                 return Ok(JsonConvert.DeserializeObject<List<ListingDto>>(cachedListings));
+            }
 
             var listings = await _repository.GetAll();
 
@@ -50,12 +52,16 @@ namespace api.Controllers
             var cachedListing = await _cache.GetStringAsync(cacheKey);
 
             if (cachedListing != null)
+            {
                 return Ok(JsonConvert.DeserializeObject<Listing>(cachedListing));
+            }
 
             var listing = await _repository.Get(id);
 
-            if (listing == null) 
+            if (listing == null)
+            {
                 return BadRequest();
+            }
 
             await _cache.SetStringAsync(
                 cacheKey,
@@ -65,13 +71,6 @@ namespace api.Controllers
             );
 
             return Ok(listing);
-        }
-
-        [HttpGet("statistics")]
-        [Authorize(Policy = "ReadStatisticsAccess")]
-        public ActionResult GetStatistics()
-        {
-            return Ok();
         }
     }
 }

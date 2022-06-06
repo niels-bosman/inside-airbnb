@@ -14,7 +14,7 @@ public class ListingRepository : IListingRepository
         _listings = context.Set<Listing>();
     }
 
-    public async Task<IEnumerable<ListingDto>> GetAll()
+    public async Task<IEnumerable<ListingDto>?> GetAll()
     {
         return await _listings
             .AsDto()

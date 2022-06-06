@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using api.Models;
 using api.Repositories;
+using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,7 @@ builder.Services.AddAuthorization(options =>
         policy.RequireClaim("permissions", "read:statistics"));
 });
 
+builder.Services.AddScoped<IStatisticsService, StatisticsService>();
 builder.Services.AddScoped<IListingRepository, ListingRepository>();
 
 var app = builder.Build();

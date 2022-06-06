@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Chart as ChartJS,
   ArcElement,
@@ -9,18 +9,34 @@ import {
   BarElement
 } from 'chart.js'
 import { Pie, Bar } from 'react-chartjs-2'
-import { Listing } from '../models/Listing'
+import axios from 'axios'
+import { useAuth0 } from '@auth0/auth0-react'
+import { PriceAveragePerNeighbourhood } from '../models/PriceAveragePerNeighbourhood'
+import { ListingAmountPerNeighbourhood } from '../models/ListingAmountPerNeighbourhood'
+import { RatingAveragePerNeighbourhood } from '../models/RatingAveragePerNeighbourhood'
 import {
-  getAveragePricePerNeighbourhood,
-  getAverageRatingPerNeighbourhood,
-  getListingsPerNeighbourhood
-} from '../data/statistics'
+  listingAmountToPie,
+  priceAverageToBar,
+  ratingAverageToBar
+} from '../mappers/statistics-mapper'
 
 type Props = {
-  listings: Listing[],
+  API_URL: string,
 }
 
-export const Statistics: React.FC<Props> = ({ listings }) => {
+export const Statistics: React.FC<Props> = ({ API_URL }) => {
+  const [statistics, setStatistics] = useState<[
+    ListingAmountPerNeighbourhood[],
+    PriceAveragePerNeighbourhood[],
+    RatingAveragePerNeighbourhood[]
+  ]>()
+  const [loading, setLoading] = useState<boolean>(true)
+  const [hasPermissions, setHasPermissions] = useState<boolean>(true)
+
+  useEffect(() => {
+    fetchStatistics()
+  }, [])
+
   ChartJS.register(
     ArcElement,
     Tooltip,
@@ -32,10 +48,45 @@ export const Statistics: React.FC<Props> = ({ listings }) => {
     Legend
   )
 
+  const { getAccessTokenSilently } = useAuth0()
+
+  const fetch = async (statisticRoute: string, token: string) => {
+    return (await axios.get(`${API_URL}/Statistics/${statisticRoute}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })).data
+  }
+
+  const fetchStatistics = async () => {
+    const token = await getAccessTokenSilently()
+
+    try {
+      const statistics = await Promise.all([
+        fetch('listing-amount-per-neighbourhood', token),
+        fetch('average-price-per-neighbourhood', token),
+        fetch('average-rating-per-neighbourhood', token),
+      ])
+
+      setStatistics(statistics)
+      setLoading(false)
+    } catch {
+      setHasPermissions(false)
+    }
+  }
+
+  if (!hasPermissions) {
+    return <p>Je hebt helaas niet genoeg rechten om statistieken in te zien.</p>
+  }
+
+  if (loading) return (
+    <p>Aan het laden...</p>
+  )
+
   return (
     <>
       <h5>Aantal listings per buurt</h5>
-      <Pie data={getListingsPerNeighbourhood(listings)}/>
+      <Pie data={listingAmountToPie(statistics[0])}/>
       <h5>Gemiddelde prijs per buurt</h5>
       <Bar
         options={{
@@ -47,7 +98,7 @@ export const Statistics: React.FC<Props> = ({ listings }) => {
             }
           }
         }}
-        data={getAveragePricePerNeighbourhood(listings)}
+        data={priceAverageToBar(statistics[1])}
       />
       <h5>Gemiddelde rating per buurt</h5>
       <Bar
@@ -60,7 +111,7 @@ export const Statistics: React.FC<Props> = ({ listings }) => {
             }
           }
         }}
-        data={getAverageRatingPerNeighbourhood(listings)}
+        data={ratingAverageToBar(statistics[2])}
       />
     </>
   )
