@@ -9,15 +9,15 @@ import { Filters } from '../components/Filters'
 import { AdminPanel } from '../components/AdminPanel'
 import { ActiveListing } from '../components/ActiveListing'
 import { ExtendedListing } from '../models/ExtendedListing'
+import { Auth0Provider } from '@auth0/auth0-react'
 
 
 type Props = {
   MAPBOX_ACCESS_TOKEN: string,
-  API_URL: string,
   allListings: Listing[],
 }
 
-const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, API_URL, allListings }) => {
+const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, allListings }) => {
   const [listings, setListings] = useState<Listing[]>(allListings)
   const [currentListing, setCurrentListing] = useState<ExtendedListing | null>(null)
 
@@ -34,7 +34,6 @@ const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, API_URL, allListings }) =>
             listings={listings}
             token={MAPBOX_ACCESS_TOKEN}
             onListingSelect={setCurrentListing}
-            API_URL={API_URL}
           />
         </section>
         <aside className={styles.sidebar}>
@@ -42,9 +41,15 @@ const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, API_URL, allListings }) =>
             listings={allListings}
             onFilter={setListings}
           />
-          <AdminPanel
-            API_URL={API_URL}
-          />
+          <Auth0Provider
+            domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN}
+            clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}
+            redirectUri={process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL}
+            audience={process.env.NEXT_PUBLIC_AUTH0_AUDIENCE}
+            cacheLocation="localstorage"
+          >
+            <AdminPanel/>
+          </Auth0Provider>
           <ActiveListing
             onClose={() => setCurrentListing(null)}
             listing={currentListing}
@@ -58,14 +63,13 @@ const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, API_URL, allListings }) =>
 export default Home
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const { MAPBOX_ACCESS_TOKEN, API_URL } = process.env
+  const { MAPBOX_ACCESS_TOKEN, NEXT_PUBLIC_API_URL } = process.env
 
-  const allListings: Listing[] = (await axios.get(`${API_URL}/listing`)).data
+  const allListings: Listing[] = (await axios.get(`${NEXT_PUBLIC_API_URL}/listing`)).data
 
   return {
     props: {
       MAPBOX_ACCESS_TOKEN,
-      API_URL,
       allListings,
     }
   }

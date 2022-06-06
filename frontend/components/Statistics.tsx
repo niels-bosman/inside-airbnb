@@ -20,11 +20,7 @@ import {
   ratingAverageToBar
 } from '../mappers/statistics-mapper'
 
-type Props = {
-  API_URL: string,
-}
-
-export const Statistics: React.FC<Props> = ({ API_URL }) => {
+export const Statistics: React.FC = () => {
   const [statistics, setStatistics] = useState<[
     ListingAmountPerNeighbourhood[],
     PriceAveragePerNeighbourhood[],
@@ -51,7 +47,8 @@ export const Statistics: React.FC<Props> = ({ API_URL }) => {
   const { getAccessTokenSilently } = useAuth0()
 
   const fetch = async (statisticRoute: string, token: string) => {
-    return (await axios.get(`${API_URL}/Statistics/${statisticRoute}`, {
+    const { NEXT_PUBLIC_API_URL } = process.env
+    return (await axios.get(`${NEXT_PUBLIC_API_URL}/Statistics/${statisticRoute}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }

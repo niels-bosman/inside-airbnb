@@ -13,7 +13,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(
         name: "_myAllowSpecificOrigins",
-        policy => policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod()
+        policy => policy.WithOrigins("http://localhost:3000", "https://inside-airbnb-niels.azurewebsites.net").AllowAnyHeader().AllowAnyMethod()
     );
 });
 
@@ -27,7 +27,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<Airbnb2022Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
+builder.Services.AddDbContext<Airbnb2022Context>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -62,6 +62,13 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("_myAllowSpecificOrigins");
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("Content-Type", "application/json");
+    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+    await next();
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

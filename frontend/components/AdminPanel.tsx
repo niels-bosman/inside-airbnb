@@ -2,13 +2,8 @@ import { useAuth0 } from '@auth0/auth0-react'
 import styles from '../styles/Sidebar.module.css'
 import React from 'react'
 import { Statistics } from './Statistics'
-import { Listing } from '../models/Listing'
 
-type Props = {
-  API_URL: string,
-}
-
-export const AdminPanel: React.FC<Props> = ({ API_URL }) => {
+export const AdminPanel: React.FC = () => {
   const {
     isAuthenticated,
     loginWithRedirect,
@@ -28,7 +23,7 @@ export const AdminPanel: React.FC<Props> = ({ API_URL }) => {
               >
                 Uitloggen
               </button>
-              <Statistics API_URL={API_URL}/>
+              <Statistics/>
             </>
           )
           : <button

@@ -11,13 +11,13 @@ type Props = {
   listings: Listing[],
   token: string,
   onListingSelect: Function,
-  API_URL: string,
 }
 
-const ListingsMap: React.FC<Props> = ({ listings, token, onListingSelect, API_URL }) => {
-  const fetchListing = async (id: number): Promise<ExtendedListing> => (
-    (await axios.get(`${API_URL}/listing/${id}`)).data
-  )
+const ListingsMap: React.FC<Props> = ({ listings, token, onListingSelect }) => {
+  const fetchListing = async (id: number): Promise<ExtendedListing> => {
+    const { NEXT_PUBLIC_API_URL } = process.env
+    return (await axios.get(`${NEXT_PUBLIC_API_URL}/listing/${id}`)).data
+  }
 
   const handleMapClick = async (e: MapLayerMouseEvent) => {
     if (!e?.features) return
