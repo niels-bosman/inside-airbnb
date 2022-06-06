@@ -52,7 +52,7 @@ public class StatisticsService : IStatisticsService
             .Select(neighbourhood => new NeighbourhoodRatingAverage
             {
                 Neighbourhood = neighbourhood.Key,
-                RatingAverage = neighbourhood.Average(listing => listing.ReviewScoresRating / 10)
+                RatingAverage = neighbourhood.Average(listing => listing.ReviewScoresRating) / 10
             });
     }
 }

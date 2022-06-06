@@ -35,7 +35,7 @@ export const priceAverageToBar = (statistics: PriceAveragePerNeighbourhood[]) =>
     labels: statistics.map(statistic => statistic.neighbourhood),
     datasets: [
       {
-        label: 'Average value',
+        label: 'Average price',
         data: statistics.map(statistic => statistic.priceAverage),
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       }
@@ -48,7 +48,7 @@ export const ratingAverageToBar = (statistics: RatingAveragePerNeighbourhood[]) 
     labels: statistics.map(statistic => statistic.neighbourhood),
     datasets: [
       {
-        label: 'Average value',
+        label: 'Average rating',
         data: statistics.map(statistic => statistic.ratingAverage),
         backgroundColor: 'rgba(53, 162, 235, 0.5)',
       }
