@@ -4,7 +4,7 @@ import ListingsMap from '../components/ListingsMap'
 import axios from 'axios'
 import { Listing } from '../models/Listing'
 import React, { useState } from 'react'
-import { GetServerSideProps } from 'next'
+import { GetStaticProps } from 'next'
 import { Filters } from '../components/Filters'
 import { AdminPanel } from '../components/AdminPanel'
 import { ActiveListing } from '../components/ActiveListing'
@@ -62,7 +62,7 @@ const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, allListings }) => {
 
 export default Home
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const { MAPBOX_ACCESS_TOKEN, NEXT_PUBLIC_API_URL } = process.env
 
   const allListings: Listing[] = (await axios.get(`${NEXT_PUBLIC_API_URL}/listing`)).data
@@ -71,6 +71,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       MAPBOX_ACCESS_TOKEN,
       allListings,
-    }
+    },
+    revalidate: 30,
   }
 }
