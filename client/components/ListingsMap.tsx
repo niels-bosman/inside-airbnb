@@ -9,11 +9,10 @@ import axios from 'axios'
 
 type Props = {
   listings: Listing[],
-  token: string,
   onListingSelect: Function,
 }
 
-const ListingsMap: React.FC<Props> = ({ listings, token, onListingSelect }) => {
+const ListingsMap: React.FC<Props> = ({ listings, onListingSelect }) => {
   const fetchListing = async (id: number): Promise<ExtendedListing> => {
     const { NEXT_PUBLIC_API_URL } = process.env
     return (await axios.get(`${NEXT_PUBLIC_API_URL}/listing/${id}`)).data
@@ -31,7 +30,7 @@ const ListingsMap: React.FC<Props> = ({ listings, token, onListingSelect }) => {
   return (
     <Map
       interactiveLayerIds={[unclusteredPointLayer.id!]}
-      mapboxAccessToken={token}
+      mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN}
       initialViewState={{ latitude: 52.36, longitude: 4.90, zoom: 11 }}
       style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0 }}
       mapStyle="mapbox://styles/mapbox/dark-v10"

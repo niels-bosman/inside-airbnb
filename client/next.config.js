@@ -1,5 +1,5 @@
 const ContentSecurityPolicy = `
-  default-src 'self' *.auth0.com api.mapbox.com events.mapbox.com 'unsafe-eval' 'unsafe-inline' data: blob: https://inside-airbnb-api.azurewebsites.net https://localhost:7220 https://a0.muscache.com;
+  default-src 'self' https://dev-j162wi-u.us.auth0.com api.mapbox.com events.mapbox.com 'unsafe-eval' 'unsafe-inline' data: blob: https://inside-airbnb-api.azurewebsites.net https://localhost:7220 https://a0.muscache.com;
 `
 
 const securityHeaders = [

@@ -13,11 +13,10 @@ import { Auth0Provider } from '@auth0/auth0-react'
 
 
 type Props = {
-  MAPBOX_ACCESS_TOKEN: string,
   allListings: Listing[],
 }
 
-const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, allListings }) => {
+const Home: React.FC<Props> = ({ allListings }) => {
   const [listings, setListings] = useState<Listing[]>(allListings)
   const [currentListing, setCurrentListing] = useState<ExtendedListing | null>(null)
 
@@ -32,7 +31,6 @@ const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, allListings }) => {
         <section className={styles.map}>
           <ListingsMap
             listings={listings}
-            token={MAPBOX_ACCESS_TOKEN}
             onListingSelect={setCurrentListing}
           />
         </section>
@@ -63,15 +61,11 @@ const Home: React.FC<Props> = ({ MAPBOX_ACCESS_TOKEN, allListings }) => {
 export default Home
 
 export const getStaticProps: GetStaticProps = async () => {
-  const { MAPBOX_ACCESS_TOKEN, NEXT_PUBLIC_API_URL } = process.env
-
+  const { NEXT_PUBLIC_API_URL } = process.env
   const allListings: Listing[] = (await axios.get(`${NEXT_PUBLIC_API_URL}/listing`)).data
 
   return {
-    props: {
-      MAPBOX_ACCESS_TOKEN,
-      allListings,
-    },
+    props: { allListings },
     revalidate: 30,
   }
 }
