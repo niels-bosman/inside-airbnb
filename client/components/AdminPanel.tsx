@@ -19,7 +19,7 @@ export const AdminPanel: React.FC = () => {
             <>
               <button
                 className={styles.loginButton}
-                onClick={() => logout()}
+                onClick={() => logout({ returnTo: process.env.NEXT_PUBLIC_AUTH0_CALLBACK_URL })}
               >
                 Uitloggen
               </button>
