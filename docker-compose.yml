@@ -11,20 +11,6 @@ services:
     env_file:
       - ./database/.env
 
-  next:
-    build:
-      dockerfile: ./frontend/Dockerfile
-      context: .
-    restart: always
-
-  api:
-    build:
-      dockerfile: ./api/Dockerfile
-      context: .
-    restart: always
-    ports:
-      - 5001:80
-
   cache:
     image: redis:latest
     restart: always
